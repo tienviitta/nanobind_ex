@@ -1,0 +1,2 @@
+add_executable(nanobind_ex_app nanobind_ex_app.cpp)
+target_link_libraries(nanobind_ex_app PRIVATE nanobind_ex)
