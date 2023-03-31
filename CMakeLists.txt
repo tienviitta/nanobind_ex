@@ -37,16 +37,36 @@ if(BUILD_DOCS)
 endif()
 
 if(BUILD_PYTHON)
-    # Add Python bindings
-    add_subdirectory(ext/pybind11)
+    # # Add Python bindings
+    # add_subdirectory(ext/pybind11)
 
-    # Compile the Pybind11 module
-    pybind11_add_module(_nanobind_ex python/nanobind_ex/_nanobind_ex.cpp)
+    # # Compile the Pybind11 module
+    # pybind11_add_module(_nanobind_ex python/nanobind_ex/_nanobind_ex.cpp)
+    # target_link_libraries(_nanobind_ex PUBLIC nanobind_ex)
+
+    # # Install the Python module shared library
+    # install(TARGETS _nanobind_ex DESTINATION .)
+
+    # Searches for Python >= 3.8 including the Development.Module component required
+    # by nanobind.
+    find_package(Python 3.8 COMPONENTS Interpreter Development.Module REQUIRED)
+
+    # Configure CMake to perform an optimized release build by default unless another
+    # build type is specified. Without this addition, binding code may run slowly and
+    # produce large binaries.
+    if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+        set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+        set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+    endif()
+
+    # Git submodule: Point CMake to the directory where nanobind is checked out.
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/nanobind)
+
+    # Compile the extension from the source code.
+    nanobind_add_module(_nanobind_ex python/nanobind_ex/_nanobind_ex.cpp)
     target_link_libraries(_nanobind_ex PUBLIC nanobind_ex)
-
-    # Install the Python module shared library
-    install(TARGETS _nanobind_ex DESTINATION .)
 endif()
+
 
 # Add an alias target for use if this project is included as a subproject in another project
 add_library(nanobind_ex::nanobind_ex ALIAS nanobind_ex)
