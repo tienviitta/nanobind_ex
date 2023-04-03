@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NANOBIND_EX_H
+#define NANOBIND_EX_H
 
 #include <cstddef>
 #include <cstdint>
@@ -24,7 +25,10 @@ struct Fec {
     void decode(uint8_t *bits, size_t n_bits);
     std::vector<uint8_t> m_data;
     uint8_t m_sum;
+    bool m_chk;
     size_t n_data;
 };
 
 } // namespace nanobind_ex
+
+#endif // NANOBIND_EX_H

@@ -13,7 +13,8 @@ NB_MODULE(_nanobind_ex, m) {
     m.def("add_one", &add_one, "Increments an integer value");
     nb::class_<Fec>(m, "Fec")
         .def(nb::init<>())
-        .def_rw("chk", &Fec::m_sum)
+        .def_ro("sum", &Fec::m_sum)
+        .def_ro("chk", &Fec::m_chk)
         .def("encode",
              [](Fec &m_fec,
                 nb::ndarray<uint8_t, nb::shape<nb::any>, nb::c_contig, nb::device::cpu>

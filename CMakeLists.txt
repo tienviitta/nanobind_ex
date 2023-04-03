@@ -15,6 +15,14 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Compilation options
 option(BUILD_PYTHON "Enable building of Python bindings" ON)
 option(BUILD_DOCS "Enable building of documentation" ON)
+message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message(STATUS "Logging level: INFO")
+    add_compile_definitions(SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO)
+else()
+    message(STATUS "Logging level: WARN")
+    add_compile_definitions(SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_WARN)
+endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 # Logging
 add_subdirectory(ext/spdlog)
