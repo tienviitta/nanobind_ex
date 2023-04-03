@@ -15,14 +15,19 @@ NB_MODULE(_nanobind_ex, m) {
         .def(nb::init<>())
         .def_ro("sum", &Fec::m_sum)
         .def_ro("chk", &Fec::m_chk)
-        .def("encode",
+        .def("chksum",
              [](Fec &m_fec,
                 nb::ndarray<uint8_t, nb::shape<nb::any>, nb::c_contig, nb::device::cpu>
-                    &bits) { m_fec.encode(bits.data(), bits.shape(0)); })
-        .def("decode",
+                    &bits) { m_fec.chksum(bits.data(), bits.shape(0)); })
+        .def("chkchk",
              [](Fec &m_fec,
                 nb::ndarray<uint8_t, nb::shape<nb::any>, nb::c_contig, nb::device::cpu>
-                    &bits) { m_fec.decode(bits.data(), bits.shape(0)); });
+                    &bits) { m_fec.chkchk(bits.data(), bits.shape(0)); })
+        .def("encrypt",
+             [](Fec &m_fec,
+                nb::ndarray<uint8_t, nb::shape<nb::any>, nb::c_contig, nb::device::cpu>
+                    &bits,
+                uint8_t key) { m_fec.encrypt(bits.data(), bits.shape(0), key); });
 }
 
 } // namespace nanobind_ex

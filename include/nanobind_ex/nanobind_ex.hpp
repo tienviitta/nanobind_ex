@@ -21,8 +21,9 @@ int add_one(int x);
 struct Fec {
     Fec();
     ~Fec();
-    void encode(uint8_t *bits, size_t n_bits);
-    void decode(uint8_t *bits, size_t n_bits);
+    void chksum(uint8_t *bits, size_t n_bits);
+    void chkchk(uint8_t *bits, size_t n_bits);
+    void encrypt(uint8_t *bytes, size_t n_bytes, const uint8_t key);
     std::vector<uint8_t> m_data;
     uint8_t m_sum;
     bool m_chk;
