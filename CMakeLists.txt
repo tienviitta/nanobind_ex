@@ -16,13 +16,16 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 option(BUILD_PYTHON "Enable building of Python bindings" ON)
 option(BUILD_DOCS "Enable building of documentation" ON)
 
-# compile the library
+# Logging
+add_subdirectory(ext/spdlog)
+
+# Compile the library
 add_subdirectory(src)
 
-# compile the application
+# Compile the application
 add_subdirectory(app)
 
-# compile the tests
+# Compile the tests
 include(CTest)
 
 if(BUILD_TESTING)
@@ -64,7 +67,7 @@ if(BUILD_PYTHON)
 
     # Compile the extension from the source code.
     nanobind_add_module(_nanobind_ex python/nanobind_ex/_nanobind_ex.cpp)
-    target_link_libraries(_nanobind_ex PUBLIC nanobind_ex)
+    target_link_libraries(_nanobind_ex PUBLIC nanobind_ex spdlog)
 endif()
 
 
@@ -73,7 +76,7 @@ add_library(nanobind_ex::nanobind_ex ALIAS nanobind_ex)
 
 # Install targets and configuration
 install(
-    TARGETS nanobind_ex
+    TARGETS nanobind_ex spdlog
     EXPORT nanobind_ex-config
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

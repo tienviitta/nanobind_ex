@@ -3,3 +3,4 @@ target_include_directories(nanobind_ex PUBLIC
   $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
+target_link_libraries(nanobind_ex PRIVATE spdlog)

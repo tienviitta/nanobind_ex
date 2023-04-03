@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <vector>
 
 namespace nanobind_ex {
 
@@ -21,7 +22,8 @@ struct Fec {
     ~Fec();
     void encode(uint8_t *bits, size_t n_bits);
     void decode(uint8_t *bits, size_t n_bits);
-    uint8_t *m_data;
+    std::vector<uint8_t> m_data;
+    uint8_t m_sum;
     size_t n_data;
 };
 

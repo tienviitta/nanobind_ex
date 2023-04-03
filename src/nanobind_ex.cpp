@@ -1,29 +1,30 @@
 #include "nanobind_ex/nanobind_ex.hpp"
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <numeric>
+#include <spdlog/fmt/ranges.h>
+#include <spdlog/spdlog.h>
 
 namespace nanobind_ex {
 
 int add_one(int x) { return x + 1; }
 
-Fec::Fec() : m_data(nullptr), n_data(0) {}
+Fec::Fec() : m_data(0), m_sum(0), n_data(0) { spdlog::set_level(spdlog::level::debug); }
 
-Fec::~Fec() {
-    if (m_data) {
-        delete [] m_data;
-    }
-}
+Fec::~Fec() {}
 
 void Fec::encode(uint8_t *bits, size_t n_bits) {
-    m_data = bits;
-    n_data = n_bits;
+    // Copy input bits
+    m_data.assign(bits, bits + n_bits);
+    m_sum = std::accumulate(m_data.begin(), m_data.end(), 0);
+    spdlog::debug("bits: {}, chk: {}", m_data, m_sum);
 }
 
 void Fec::decode(uint8_t *bits, size_t n_bits) {
-    for (size_t i = 0; i < n_data; i++) {
-        bits[i] = bits[i] ^ m_data[i];
-    }
+    std::vector<uint8_t> data(bits, bits + n_bits);
+    uint8_t sum = std::accumulate(data.begin(), data.end(), 0);
+    spdlog::debug("bits: {}, sum: {}, chk: {}", data, sum, m_sum);
 }
-
 
 } // namespace nanobind_ex
